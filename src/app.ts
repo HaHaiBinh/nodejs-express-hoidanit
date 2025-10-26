@@ -5,8 +5,12 @@ import 'dotenv/config'
 const app = express()
 const port = process.env.PORT || 6868
 
+// config view engine
+app.set('view engine', 'ejs')
+app.set('views', './src/views')
+
 app.get('/', (req, res) => {
-  res.send('Hello World ^^^!')
+  res.render('home.ejs', { name: 'HHB' })
 })
 
 app.get('/hhb', (req, res) => {
@@ -15,5 +19,4 @@ app.get('/hhb', (req, res) => {
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
-  console.log('log port', process.env.PORT)
 })
