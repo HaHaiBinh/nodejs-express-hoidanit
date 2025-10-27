@@ -11,11 +11,15 @@ const port = process.env.PORT || 6868
 app.set('view engine', 'ejs')
 app.set('views', './src/views')
 
-// config routes
-webRoutes(app)
+// config body parser (req.body)
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 
 // config static files: img, css, js
 app.use(express.static('public'))
+
+// config routes
+webRoutes(app)
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
