@@ -1,6 +1,5 @@
-import getConnection from 'config/database';
 import { Request, Response } from 'express';
-import { deleteUserById, getAllUsers, handleCreateUser } from 'services/user.service';
+import { deleteUserById, getAllUsers, getUserById, handleCreateUser } from 'services/user.service';
 
 const getHomePage = async (req: Request, res: Response) => {
     // get user
@@ -30,4 +29,12 @@ const postDeleteUserPage = async (req: Request, res: Response) => {
     return res.redirect('/')
 }
 
-export { getHomePage, getCreateUserPage, postCreateUserPage, postDeleteUserPage };
+const getViewUserPage = async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    const dataUser = await getUserById(id);
+
+    return res.render('view-user.ejs', { userId: id, dataUser: dataUser });
+}
+
+export { getHomePage, getCreateUserPage, postCreateUserPage, postDeleteUserPage, getViewUserPage };

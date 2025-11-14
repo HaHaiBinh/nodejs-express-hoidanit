@@ -43,4 +43,17 @@ const deleteUserById = async (userId: string) => {
     }   
 }
 
-export { handleCreateUser, getAllUsers, deleteUserById };
+const getUserById = async (userId: string) => {
+    const connection = await getConnection();
+    try {
+        const sql = 'SELECT * FROM `users` WHERE `id` = ?';
+        const values = [userId];
+        const [results, fields] = await connection.execute(sql, values);
+        return results[0];
+    } catch (err) {
+        console.log(err);
+        return null;
+    }   
+}
+
+export { handleCreateUser, getAllUsers, deleteUserById, getUserById };
