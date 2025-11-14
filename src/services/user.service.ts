@@ -1,6 +1,33 @@
-const handleCreateUser = (fullName: string, email: string, address: string) => {
-    // Here you can add logic to save the user data to a database or perform other operations
+import getConnection from "../config/database";
+
+const handleCreateUser = async (fullName: string, email: string, address: string) => {
+    const connection = await getConnection();
+
+    try {
+        const sql = 'INSERT INTO `users`(`name`, `email`, `address`) VALUES (?, ?, ?)';
+        const values = [fullName, email, address];
+
+        const [result, fields] = await connection.execute(sql, values);
+        return result;
+    } catch (err) {
+        console.log(err);
+    }
+
     console.log('insert a new user')
 }
 
-export { handleCreateUser };
+const getAllUsers = async () => {
+    const connection = await getConnection();
+
+    try {
+        const [results, fields] = await connection.query(
+            'SELECT * FROM `users`'
+        );
+        return results;
+    } catch (err) {
+        console.log(err);
+        return [];
+    }
+}
+
+export { handleCreateUser, getAllUsers };

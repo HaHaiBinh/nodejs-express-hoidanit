@@ -13,8 +13,40 @@
 </head>
 
 <body>
-    <h1>Hello from ejs from controller</h1>
-    <a href="/create-user" class="btn btn-primary">Create User</a>
+    <div style="margin: 25px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h1>List Users: </h1>
+            <div>
+                <a href="/create-user" class="btn btn-primary">Create User</a>
+            </div>
+        </div>
+        <hr />
+        <div>
+            <table class="table table-hover table-bordered">
+                <thead>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Address</th>
+                    <th>Action</th>
+                </thead>
+                </thead>
+                <tbody>
+                    <% name.forEach(user => { %>
+                    <tr>
+                        <td><%= user.id %></td>
+                        <td><%= user.name %></td>
+                        <td><%= user.email %></td>
+                        <td><%= user.address %></td>
+                        <td>
+                            <button class="btn btn-danger">Delete</button>
+                        </td>
+                    </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </body>
 
 </html>
