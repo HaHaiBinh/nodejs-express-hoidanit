@@ -23,6 +23,7 @@ const getAllUsers = async () => {
         const [results, fields] = await connection.query(
             'SELECT * FROM `users`'
         );
+        
         return results;
     } catch (err) {
         console.log(err);
