@@ -17,7 +17,8 @@
     <div style="width: 600; margin: auto">
         <h3>View detail a user id = <%= userId %></h3>
 
-        <form action="/handle-update-user/<%= userId %>" method="post">
+        <form action="/handle-update-user" method="post">
+            <input type="hidden" name="id" value="<%= dataUser.id %>">
             <div class="mb-3">
                 <label class="form-label">Name: </label>
                 <input value="<%= dataUser.name %>" name="fullName" type="text" class="form-control" placeholder="your name">
