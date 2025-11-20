@@ -1,15 +1,19 @@
 import getConnection from "config/database";
-import { prisma } from "config/client";
 
 const handleCreateUser = async (fullName: string, email: string, address: string) => {
-    const newUser = await prisma.user.create({
-        data: {
-            name: fullName,
-            email: email,
-            address: address
-        }
-    })
-    return newUser;
+    const connection = await getConnection();
+
+    try {
+        const sql = 'INSERT INTO `users`(`name`, `email`, `address`) VALUES (?, ?, ?)';
+        const values = [fullName, email, address];
+
+        const [result, fields] = await connection.execute(sql, values);
+        return result;
+    } catch (err) {
+        console.log(err);
+    }
+
+    console.log('insert a new user')
 }
 
 const getAllUsers = async () => {
@@ -17,9 +21,9 @@ const getAllUsers = async () => {
 
     try {
         const [results, fields] = await connection.query(
-            'SELECT * FROM `user`'
+            'SELECT * FROM `users`'
         );
-
+        
         return results;
     } catch (err) {
         console.log(err);
@@ -36,7 +40,7 @@ const deleteUserById = async (userId: string) => {
         return result;
     } catch (err) {
         console.log(err);
-    }
+    }   
 }
 
 const getUserById = async (userId: string) => {
@@ -49,7 +53,7 @@ const getUserById = async (userId: string) => {
     } catch (err) {
         console.log(err);
         return null;
-    }
+    }   
 }
 
 const updateUserById = async (userId: string, fullName: string, email: string, address: string) => {
@@ -61,7 +65,7 @@ const updateUserById = async (userId: string, fullName: string, email: string, a
         return result;
     } catch (err) {
         console.log(err);
-    }
+    }   
 }
 
 export { handleCreateUser, getAllUsers, deleteUserById, getUserById, updateUserById };
