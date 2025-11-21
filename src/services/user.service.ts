@@ -4,9 +4,13 @@ import { prisma } from "config/client";
 const handleCreateUser = async (fullName: string, email: string, address: string) => {
     const newUser = await prisma.user.create({
         data: {
-            name: fullName,
-            email: email,
-            address: address
+            username: email,
+            password: '',
+            fullName: fullName,
+            address: address,
+            phone: "",
+            accountType: "",
+            avatar: "",
         }
     })
     return newUser;
@@ -20,7 +24,7 @@ const getAllUsers = async () => {
 const deleteUserById = async (userId: string) => {
     const deletedUser = await prisma.user.delete({
         where: {
-            id: Number(userId), 
+            id: Number(userId),
         }
     });
     return deletedUser;
@@ -29,7 +33,7 @@ const deleteUserById = async (userId: string) => {
 const getUserById = async (userId: string) => {
     const user = await prisma.user.findUnique({
         where: {
-            id: Number(userId), 
+            id: Number(userId),
         }
     });
     return user;
@@ -41,8 +45,10 @@ const updateUserById = async (userId: string, fullName: string, email: string, a
             id: Number(userId),
         },
         data: {
-            name: fullName,
-            email: email,
+            fullName: fullName,
+            username: email,
+            password: "",
+            accountType: "",
             address: address
         }
     });

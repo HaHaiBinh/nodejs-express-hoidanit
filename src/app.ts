@@ -4,6 +4,7 @@ import express from 'express'
 import webRoutes from './routes/web'
 
 import 'dotenv/config'
+import initDatabase from 'config/seed'
 const app = express()
 const port = process.env.PORT || 6868
 
@@ -20,6 +21,9 @@ app.use(express.static('public'))
 
 // config routes
 webRoutes(app)
+
+// seeding data
+initDatabase();
 
 app.listen(port, () => {
   console.log(`Example app listening on port haha ${port}`)
