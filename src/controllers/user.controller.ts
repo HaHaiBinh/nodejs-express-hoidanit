@@ -4,7 +4,6 @@ import { deleteUserById, getAllRoles, getAllUsers, getUserById, handleCreateUser
 const getHomePage = async (req: Request, res: Response) => {
     // get user
     const users = await getAllUsers();
-    // console.log('>>> check users: ', users);
 
     return res.render('home.ejs', { name: users });
 }
@@ -17,7 +16,7 @@ const getCreateUserPage = async (req: Request, res: Response) => {
 const postCreateUserPage = async (req: Request, res: Response) => {
     const { fullName, username, address, phone, role } = req.body;
     const file = req.file;
-    const avatar = file?.filename ?? null;
+    const avatar = file?.filename ?? '';
 
     await handleCreateUser(fullName, username, address, phone, avatar);
 
