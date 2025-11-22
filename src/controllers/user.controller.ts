@@ -15,10 +15,11 @@ const getCreateUserPage = async (req: Request, res: Response) => {
 }
 
 const postCreateUserPage = async (req: Request, res: Response) => {
-    const { fullName, username, phone, role, address } = req.body;
-    console.log('req ===', req.body)
+    const { fullName, username, address, phone, role } = req.body;
+    const file = req.file;
+    const avatar = file?.filename ?? null;
 
-    // await handleCreateUser(fullName, email, address);
+    await handleCreateUser(fullName, username, address, phone, avatar);
 
     return res.redirect('/admin/user');
 }
@@ -42,10 +43,10 @@ const getViewUserPage = async (req: Request, res: Response) => {
 const postUpdateUserPage = async (req: Request, res: Response) => {
     const { id, fullName, email, address } = req.body;
     console.log('id ,fullName, email, address:', id, fullName, email, address);
-  
+
     await updateUserById(id, fullName, email, address);
 
     return res.redirect('/');
 }
-    
+
 export { getHomePage, getCreateUserPage, postCreateUserPage, postDeleteUserPage, getViewUserPage, postUpdateUserPage };
