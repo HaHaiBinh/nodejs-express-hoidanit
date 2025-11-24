@@ -28,15 +28,18 @@ const postDeleteUserPage = async (req: Request, res: Response) => {
 
     await deleteUserById(id);
 
-    return res.redirect('/')
+    return res.redirect('/admin/user');
 }
 
 const getViewUserPage = async (req: Request, res: Response) => {
     const { id } = req.params;
 
     const dataUser = await getUserById(id);
+    const roles = await getAllRoles();
+    console.log('dataUser:', dataUser);
+    console.log('roles:', roles);
 
-    return res.render('view-user.ejs', { userId: id, dataUser: dataUser });
+    return res.render('admin/user/detail.ejs', { userId: id, dataUser: dataUser, roles: roles });
 }
 
 const postUpdateUserPage = async (req: Request, res: Response) => {
