@@ -2,10 +2,7 @@ import { Request, Response } from 'express';
 import { deleteUserById, getAllRoles, getAllUsers, getUserById, handleCreateUser, updateUserById } from 'services/user.service';
 
 const getHomePage = async (req: Request, res: Response) => {
-    // get user
-    const users = await getAllUsers();
-
-    return res.render('home.ejs', { name: users });
+    return res.render('client/home/show.ejs');
 }
 
 const getCreateUserPage = async (req: Request, res: Response) => {
@@ -36,8 +33,6 @@ const getViewUserPage = async (req: Request, res: Response) => {
 
     const dataUser = await getUserById(id);
     const roles = await getAllRoles();
-    console.log('dataUser:', dataUser);
-    console.log('roles:', roles);
 
     return res.render('admin/user/detail.ejs', { userId: id, dataUser: dataUser, roles: roles });
 }
