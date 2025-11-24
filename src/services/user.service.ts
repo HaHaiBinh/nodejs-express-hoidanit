@@ -11,7 +11,9 @@ const hashPassword = async (plainText: string) => {
 const handleCreateUser = async (
     fullName: string,
     email: string, address: string,
-    phone: string, avatar: string) => {
+    phone: string, avatar: string,
+    roleId: number
+) => {
 
     const defaultPassword = await hashPassword('123456');
 
@@ -24,6 +26,7 @@ const handleCreateUser = async (
             phone: phone,
             accountType: ACCOUNT_TYPE.SYSTEM,
             avatar: avatar,
+            roleId: roleId
         }
     })
     return newUser;
