@@ -1,9 +1,10 @@
 import { Request, Response } from 'express';
+import { handleCreateProduct } from 'services/admin/product.service';
 import { ProductSchema, TProductSchema } from 'src/validation/product.schema';
 
 const getAdminCreateProductPage = async (req: Request, res: Response) => {
     const errors = [];
-    const oldData  = {
+    const oldData = {
         name: "",
         price: "",
         detailDesc: "",
@@ -16,7 +17,6 @@ const getAdminCreateProductPage = async (req: Request, res: Response) => {
 }
 
 const postCreateProductPage = async (req: Request, res: Response) => {
-
     const { name, price, detailDesc, shortDesc, quantity, factory, target } = req.body as TProductSchema;
 
     const validate = ProductSchema.safeParse(req.body);
@@ -26,9 +26,9 @@ const postCreateProductPage = async (req: Request, res: Response) => {
         // error
         const errorsZod = validate.error.issues;
         const errors = errorsZod?.map((item) => `${item.message} (${item.path[0]})`);
-        const oldData  = {
+        const oldData = {
             name,
-            price,  
+            price,
             detailDesc,
             shortDesc,
             quantity,
@@ -37,6 +37,11 @@ const postCreateProductPage = async (req: Request, res: Response) => {
         }
         return res.render('admin/product/create.ejs', { errors, oldData });
     }
+
+    const image = req?.file?.filename ?? '';
+
+    await handleCreateProduct(name, +price, detailDesc, shortDesc, +quantity,
+        factory, target, image);
 
     // success
 
