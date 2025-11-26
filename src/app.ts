@@ -25,6 +25,11 @@ webRoutes(app)
 // seeding data
 initDatabase();
 
+// handle 404 page
+app.use((req, res) => {
+    res.render('client/auth/404Page.ejs');
+});
+
 app.listen(port, () => {
   console.log(`Example app listening on port haha ${port}`)
 })
