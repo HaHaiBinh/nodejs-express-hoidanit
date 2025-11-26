@@ -5,11 +5,17 @@ import fileUploadMiddleware from 'src/middleware/multer'
 import { getProductPage } from 'controllers/client/product.controller'
 import { getAdminCreateProductPage, getViewProductPage, postCreateProductPage, postDeleteProductPage, postUpdateProductPage } from 'controllers/admin/product.controllers'
 import { getLoginPage, getRegisterPage, postRegister } from 'controllers/client/auth.controller'
+import passport from 'passport'
 
 const router = express.Router()
 
 const webRoutes = (app: Express) => {
     router.get('/login', getLoginPage)
+    router.post('/login', passport.authenticate('local', {
+        successRedirect: '/',
+        failureRedirect: '/login',
+    }))  // nhấn submit form đăng nhập thì vẫn trả về trang đăng nhập
+
     router.get('/register', getRegisterPage)
     router.post('/register', postRegister)  // nhấn subnmit form đăng ký thì vẫn trả về trang đăng ký
 

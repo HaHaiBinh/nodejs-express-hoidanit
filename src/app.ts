@@ -5,6 +5,8 @@ import webRoutes from './routes/web'
 
 import 'dotenv/config'
 import initDatabase from 'config/seed'
+import passport from 'passport'
+import configPassportLocal from './middleware/passport.local'
 const app = express()
 const port = process.env.PORT || 6868
 
@@ -18,6 +20,10 @@ app.use(express.urlencoded({ extended: true }))
 
 // config static files: img, css, js
 app.use(express.static('public'))
+
+// config passport
+app.use(passport.initialize())
+configPassportLocal();
 
 // config routes
 webRoutes(app)

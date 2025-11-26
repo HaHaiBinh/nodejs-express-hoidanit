@@ -1,15 +1,28 @@
-import { handleLogin } from "services/client/auth.service";
+import { prisma } from "config/client";
+import { comparePassword } from "services/user.service";
 
-var express = require('express');
 var passport = require('passport');
 var LocalStrategy = require('passport-local');
-var crypto = require('crypto');
-var bcrypt = require('bcrypt');
-var db = require('../db');
 
 const configPassportLocal = () => {
-    passport.use(new LocalStrategy(async function verify(username, password, cb) {
-        return await handleLogin(username, password, cb);
+    passport.use(new LocalStrategy(async function verify(username, password, callback) {
+        console.log('check user', username, password)
+        // check user exist for db
+        const user = await prisma.user.findUnique({
+            where: { username: username },
+        });
+        if (!user) {
+            // throw new Error('User not found');
+            return callback(null, false, { message: 'User not found.' });
+        }
+        // check password
+        const isMatchPassword = await comparePassword(password, user.password);
+        if (!isMatchPassword) {
+            // throw new Error('Invalid password');
+            return callback(null, false, { message: 'Invalid password.' });
+        } else {
+            return callback(null, user);
+        }
     }));
 }
 

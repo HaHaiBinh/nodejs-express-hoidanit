@@ -33,23 +33,4 @@ const registerNewUser = async (fullname: string, email: string, password: string
     }
 }
 
-const handleLogin = async (username: string, password: string, callback: any) => {
-    // check user exist for db
-    const user = await prisma.user.findUnique({
-        where: { username: username },
-    }); 
-    if (!user) {
-        // throw new Error('User not found');
-        return callback(null, false, { message: 'User not found.' });
-    }
-    // check password
-    const isMatchPassword = await comparePassword(password, user.password);
-    if (!isMatchPassword) {
-        // throw new Error('Invalid password');
-        return callback(null, false, { message: 'Invalid password.' });
-    } else {
-        return callback(null, user);
-    }
-}
-
-export { isEmailExist, registerNewUser, handleLogin };
+export { isEmailExist, registerNewUser };
