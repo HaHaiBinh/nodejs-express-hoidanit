@@ -318,6 +318,35 @@
 .fruite .fruite-item .fruite-img img:hover {
     transform: scale(1.3);
 }
+/* Make product cards equal-height and images uniform */
+.fruite .tab-class .row.g-4 > [class*="col-"] {
+    display: flex;
+}
+
+.fruite .fruite-item {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    height: 100%;
+}
+
+.fruite .fruite-item .fruite-img img {
+    width: 100%;
+    height: 200px; /* choose a uniform image height */
+    object-fit: cover; /* crop but keep aspect */
+    display: block;
+}
+
+.fruite .fruite-item .p-4 {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+}
+
+/* push price / actions to the bottom of the card */
+.fruite .fruite-item .p-4 .d-flex {
+    margin-top: auto;
+}
 /*** Fruits End ***/
 
 
