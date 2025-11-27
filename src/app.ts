@@ -48,6 +48,12 @@ app.use(passport.authenticate('session'))
 
 configPassportLocal();
 
+// config global variable for views
+app.use((req, res, next) => {
+  res.locals.user = req.user || null;
+  next();
+})
+
 // config routes
 webRoutes(app)
 
