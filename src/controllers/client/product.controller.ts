@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { addProductToCart, getProductByIdClient } from 'services/client/item.service';
+import { addProductToCart, getProductByIdClient, getProductInCart } from 'services/client/item.service';
 import { User } from '@prisma/client';
 
 
@@ -25,10 +25,13 @@ const postAddProductToCart = async (req: Request, res: Response) => {
 const getCartPage = async (req: Request, res: Response) => {
     const user = req.user as User;
 
-    if (!user) {
-        return res.redirect('/login');
-    }
-    return res.render('client/product/cart.ejs');
+    if (!user)  return res.redirect('/login');
+    
+    const cartDetails = await getProductInCart(+user.id);
+
+    const totalPrice = cartDetails && cartDetails.map(item => +item.price * +item.quantity).reduce((a, b) => a + b, 0) || 0;
+
+    return res.render('client/product/cart.ejs', { cartDetails, totalPrice });
 }
 
 export { getProductPage, postAddProductToCart, getCartPage };

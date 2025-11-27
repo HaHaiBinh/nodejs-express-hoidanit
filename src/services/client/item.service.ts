@@ -1,4 +1,3 @@
-import { getProductById } from 'services/admin/product.service';
 import { prisma } from "config/client"
 import { User } from '@prisma/client';
 
@@ -111,4 +110,19 @@ const addProductToCart = async (quantity: number, productId: number, user: User)
     }
 }
 
-export { getProductHomePage, getProductByIdClient, addProductToCart }
+const getProductInCart = async (userId: number) => {
+    const cart = await prisma.cart.findUnique({
+        where: { userId },
+        include: {
+            cartDetails: {
+                include: {
+                    product: true
+                }
+            }
+        }
+    });
+
+    return cart?.cartDetails || [];
+}
+
+export { getProductHomePage, getProductByIdClient, addProductToCart, getProductInCart }
