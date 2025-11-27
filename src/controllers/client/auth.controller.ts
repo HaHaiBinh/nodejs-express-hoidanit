@@ -17,9 +17,9 @@ const getRegisterPage = (req: Request, res: Response) => {
 }
 
 const postRegister = async (req: Request, res: Response) => {
-   const { fullname, email, password, confirmPassword } = req.body as TRegisterSchema;
+    const { fullname, email, password, confirmPassword } = req.body as TRegisterSchema;
 
-   const validate = await RegisterSchema.safeParseAsync(req.body);
+    const validate = await RegisterSchema.safeParseAsync(req.body);
     if (!validate.success) {
         // error
         const errorsZod = validate.error.issues;
@@ -39,4 +39,14 @@ const postRegister = async (req: Request, res: Response) => {
     return res.redirect('/login');
 }
 
-export { getLoginPage, getRegisterPage, postRegister };
+const getSuccessRedirectPage = (req: Request, res: Response) => {
+    const user = req.user as any;
+
+    if (user?.role?.name === 'ADMIN') {
+        return res.redirect('/admin');
+    } else {
+        return res.redirect('/');
+    }
+}
+
+export { getLoginPage, getRegisterPage, postRegister, getSuccessRedirectPage };
