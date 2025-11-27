@@ -31,8 +31,8 @@ app.use(session({
     maxAge: 7 * 24 * 60 * 60 * 1000 // ms
   },
   secret: 'a santa at nasa',
-  resave: true,
-  saveUninitialized: true,
+  resave: false, // lưu session lại dù không thay đổi
+  saveUninitialized: false, // lưu cả khi chưa đăng nhập
   store: new PrismaSessionStore(
     new PrismaClient(),
     {

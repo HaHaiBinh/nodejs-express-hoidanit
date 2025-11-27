@@ -3,7 +3,6 @@ import { comparePassword, getUserById } from "services/user.service";
 
 import passport from "passport";
 import { Strategy as LocalStrategy } from 'passport-local';
-import { get } from "http";
 
 const configPassportLocal = () => {
     passport.use(new LocalStrategy({
@@ -33,7 +32,7 @@ const configPassportLocal = () => {
         }
     }));
 
-    // Lưu user vào session đưa lên cho client -> chỉ show id thôi
+    // Lưu user vào session đưa lên cho client (lưu trong db là những gì cho client biết nằm ở cookie) -> chỉ show id thôi 
     passport.serializeUser(function (user: any, callback) {
         callback(null, { id: user.id, username: user.username });
     });
