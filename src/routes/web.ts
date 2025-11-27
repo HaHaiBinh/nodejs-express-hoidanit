@@ -13,7 +13,7 @@ const router = express.Router()
 const webRoutes = (app: Express) => {
     router.get('/', getHomePage)
     router.get('/success-redirect', getSuccessRedirectPage)
-    router.get('/login', isLogin, getLoginPage)
+    router.get('/login', getLoginPage)
     router.post('/login', passport.authenticate('local', {
         successRedirect: '/success-redirect',
         failureRedirect: '/login',
@@ -27,7 +27,7 @@ const webRoutes = (app: Express) => {
     router.get('/product/:id', getProductPage)
 
     // admin routes
-    router.get('/admin', isAdmin, getDashboardPage)
+    router.get('/admin', getDashboardPage)
     
     router.get('/admin/user', getAdminUserPage)
     router.get('/admin/create-user', getCreateUserPage)
@@ -45,7 +45,7 @@ const webRoutes = (app: Express) => {
 
     router.get('/admin/order', getAdminOrderPage)
 
-    app.use('/', router)
+    app.use('/', isAdmin, router)
 }
 
 export default webRoutes
