@@ -4,7 +4,7 @@ import { getAdminOrderPage, getAdminProductPage, getAdminUserPage, getDashboardP
 import fileUploadMiddleware from 'src/middleware/multer'
 import { getProductPage } from 'controllers/client/product.controller'
 import { getAdminCreateProductPage, getViewProductPage, postCreateProductPage, postDeleteProductPage, postUpdateProductPage } from 'controllers/admin/product.controllers'
-import { getLoginPage, getRegisterPage, getSuccessRedirectPage, postRegister } from 'controllers/client/auth.controller'
+import { getLoginPage, getRegisterPage, getSuccessRedirectPage, postLogout, postRegister } from 'controllers/client/auth.controller'
 import passport from 'passport'
 import { isAdmin, isLogin } from 'src/middleware/auth'
 
@@ -19,6 +19,7 @@ const webRoutes = (app: Express) => {
         failureRedirect: '/login',
         failureMessage: true
     }))  // nhấn submit form đăng nhập thì vẫn trả về trang đăng nhập
+    router.post('/logout', postLogout)
 
     router.get('/register', getRegisterPage)
     router.post('/register', postRegister)  // nhấn subnmit form đăng ký thì vẫn trả về trang đăng ký
