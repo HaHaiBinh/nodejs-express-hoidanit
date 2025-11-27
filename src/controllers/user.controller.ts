@@ -5,6 +5,7 @@ import { deleteUserById, getAllRoles, getAllUsers, getUserById, handleCreateUser
 const getHomePage = async (req: Request, res: Response) => {
     const products = await getProductHomePage();
     const user = req.user;
+    console.log('user ==', user)
     return res.render('client/home/show.ejs', { products });
 }
 

@@ -1,13 +1,14 @@
 import { prisma } from "config/client";
-import { comparePassword } from "services/user.service";
+import { comparePassword, getUserById } from "services/user.service";
 
-var passport = require('passport');
-var LocalStrategy = require('passport-local');
+import passport from "passport";
+import { Strategy as LocalStrategy } from 'passport-local';
+import { get } from "http";
 
 const configPassportLocal = () => {
     passport.use(new LocalStrategy({
         passReqToCallback: true // can thiệp vào req trong hàm verify
-    },async function verify(req, username, password, callback) {
+    }, async function verify(req, username, password, callback) {
 
         const { session } = req as any;
         if (session?.messages?.length) {
@@ -32,20 +33,17 @@ const configPassportLocal = () => {
         }
     }));
 
-    passport.serializeUser(function (user: any, cb) {
-        process.nextTick(function () {
-            return cb(null, {
-                id: user.id,
-                username: user.username,
-                picture: user.picture
-            });
-        });
+    // Lưu user vào session đưa lên cho client -> chỉ show id thôi
+    passport.serializeUser(function (user: any, callback) {
+        callback(null, { id: user.id, username: user.username });
     });
 
-    passport.deserializeUser(function (user, cb) {
-        process.nextTick(function () {
-            return cb(null, user);
-        });
+    // Lấy user từ session ra đưa về req.user (server)
+    passport.deserializeUser(async function(user: any, callback) {
+        const { id, username } = user;
+        const userInDB = await getUserById(id);
+
+        return callback(null, { ...userInDB });
     });
 }
 
