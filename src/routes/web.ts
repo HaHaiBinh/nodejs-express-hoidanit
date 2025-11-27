@@ -14,6 +14,7 @@ const webRoutes = (app: Express) => {
     router.post('/login', passport.authenticate('local', {
         successRedirect: '/',
         failureRedirect: '/login',
+        failureMessage: true
     }))  // nhấn submit form đăng nhập thì vẫn trả về trang đăng nhập
 
     router.get('/register', getRegisterPage)
