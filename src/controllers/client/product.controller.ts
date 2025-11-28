@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { addProductToCart, deleteProductToCart, getProductByIdClient, getProductInCart } from 'services/client/item.service';
+import { addProductToCart, deleteProductToCart, getProductByIdClient, getProductInCart, updateCartDetailBeforeCheckout } from 'services/client/item.service';
 import { User } from '@prisma/client';
 
 
@@ -59,4 +59,15 @@ const getCheckoutPage = async (req: Request, res: Response) => {
     return res.render('client/product/checkout.ejs', { cartDetails, totalPrice });
 }
 
-export { getProductPage, postAddProductToCart, getCartPage, postDeleteProductToCart, getCheckoutPage };
+const postHandleCartToCheckout = async (req: Request, res: Response) => {
+    const user = req.user as User;
+
+    if (!user) return res.redirect('/login');
+
+    const currentCartDetails: { id: string, quantity: string }[] = req.body?.cartDetails ?? [];
+
+    await updateCartDetailBeforeCheckout(currentCartDetails)
+    return res.redirect('/checkout');
+}
+
+export { getProductPage, postAddProductToCart, getCartPage, postDeleteProductToCart, getCheckoutPage, postHandleCartToCheckout };
