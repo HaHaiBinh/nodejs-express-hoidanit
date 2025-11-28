@@ -125,4 +125,26 @@ const getProductInCart = async (userId: number) => {
     return cart?.cartDetails || [];
 }
 
-export { getProductHomePage, getProductByIdClient, addProductToCart, getProductInCart }
+const deleteProductToCart = async (cartDetailId: number, userId: number, sumCart: number) => {
+    const cartDetail = await prisma.cartDetail.findUnique({
+        where: { id: cartDetailId }
+    });
+
+    if (cartDetail) {
+        // cập nhật lại tổng số lượng trong giỏ hàng
+        await prisma.cart.updateMany({
+            where: {
+                userId: userId
+            },
+            data: {
+                sum: sumCart - cartDetail.quantity
+            }
+        });
+        // xóa cart-detail
+        await prisma.cartDetail.delete({
+            where: { id: cartDetailId }
+        });
+    }
+}
+
+export { getProductHomePage, getProductByIdClient, addProductToCart, getProductInCart, deleteProductToCart }
