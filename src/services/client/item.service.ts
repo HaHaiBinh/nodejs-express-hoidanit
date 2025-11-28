@@ -158,4 +158,54 @@ const updateCartDetailBeforeCheckout = async (data: { id: string, quantity: stri
     }
 }
 
-export { getProductHomePage, getProductByIdClient, addProductToCart, getProductInCart, deleteProductToCart, updateCartDetailBeforeCheckout }
+const handlePlaceOrder = async (userId: number, receiverName: string, receiverAddress: string, receiverPhone: string) => {
+    const cart = await prisma.cart.findUnique({
+        where: { userId },
+        include: {
+            cartDetails: true
+        }
+    });
+
+    console.log('cart ==', cart)
+    console.log('totalPrice ==', cart?.cartDetails.map(item => item.price * item.quantity).reduce((a, b) => a + b, 0))
+
+    if (cart) {
+        // tạo order
+
+        const dataOrderDetails = cart.cartDetails.map(item => ({
+            productId: item.productId,
+            price: item.price,
+            quantity: item.quantity
+        })) ?? [];
+
+        await prisma.order.create({
+            data: {
+                userId,
+                receiverName,
+                receiverAddress,
+                receiverPhone,
+                totalPrice: cart.cartDetails.map(item => item.price * item.quantity).reduce((a, b) => a + b, 0),
+                status: 'PENDING',
+                paymentMethod: 'COD',
+                paymentStatus: '',
+                orderDetails: {
+                    create: dataOrderDetails
+                }
+            }
+        });
+
+        // remove cart and cart-details
+        await prisma.cartDetail.deleteMany({
+            where: {
+                cartId: cart.id
+            }
+        });
+
+        await prisma.cart.delete({
+            where: { id: cart.id }
+        });
+    }
+
+}
+
+export { getProductHomePage, getProductByIdClient, addProductToCart, getProductInCart, deleteProductToCart, updateCartDetailBeforeCheckout, handlePlaceOrder }
