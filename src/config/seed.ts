@@ -37,12 +37,12 @@ const initDatabase = async () => {
                     {
                         username: "hhb@gmail.com",
                         password: defaultPassword,
-                        fullName: "User",
+                        fullName: "HHB",
                         address: "123 Admin St",
                         phone: "1234567890",
                         accountType: ACCOUNT_TYPE.SYSTEM,
                         avatar: "",
-                        roleId: adminRole.id
+                        roleId: 2
                     },
                     {
                         username: "admin@gmail.com",
