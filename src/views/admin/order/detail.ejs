@@ -31,46 +31,39 @@
                                 <hr />
                                 <table class="table table-hover table-bordered">
                                     <thead>
-                                        <th>ID</th>
-                                        <th>User Name</th>
-                                        <th>Total Price</th>
-                                        <th>Status</th>
-                                        <th>Payment Method</th>
-                                        <th>Action</th>
-                                    </thead>
+                                        <th>Sản phẩm</th>
+                                        <th>Tên</th>
+                                        <th>Giá cả</th>
+                                        <th>Số lượng</th>
+                                        <th>Thành tiền</th>
                                     </thead>
                                     <tbody>
-                                        <% dataOrder.forEach(order=> { %>
+                                        <% detailOrder?.orderDetails.forEach(item => { %>
                                             <tr>
                                                 <td>
-                                                    <%= order.id %>
+                                                    <img src="/images/product/<%=item.product.image%>" alt="<%= item.product.name %>" style="max-width: 100px;">
                                                 </td>
                                                 <td>
-                                                    <%= order.user.fullName %>
+                                                    <%= item.product.name %>
                                                 </td>
                                                 <td>
                                                     <%= new Intl.NumberFormat('vi-VN', { style: 'currency' ,
-                                                        currency: 'VND' }).format(order.totalPrice) %>
+                                                        currency: 'VND' }).format(item.product.price) %>
                                                 </td>
                                                 <td>
-                                                    <%= order.status %>
+                                                    <%= item.quantity %>
                                                 </td>
                                                 <td>
-                                                    <%= order.paymentMethod %>
-                                                </td>
-                                                <td>
-                                                    <div style="display: flex; gap: 10px;">
-                                                        <form action="/admin/view-order/<%= order.id %>"
-                                                            method="get">
-                                                            <button type="submit" class="btn btn-warning">View</button>
-                                                        </form>
-                                                    </div>
+                                                    <%= new Intl.NumberFormat('vi-VN', { style: 'currency' ,
+                                                        currency: 'VND' }).format(item.product.price * item.quantity) %>
                                                 </td>
                                             </tr>
                                             <% }) %>
                                     </tbody>
                                 </table>
                             </div>
+
+                            <a href="/admin/order" class="btn btn-success mt-3">Back to Orders</a>
                         </div>
 
                     </main>
